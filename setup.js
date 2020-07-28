@@ -85,6 +85,10 @@ const Machine = ({ id, privateIP, sshPort, role }) => ({
     namespace: 'weavek8sops'
   },
   spec: {
+    versions: {
+      kubelet: `${kubeVersion}`,
+      controlPlane: `${kubeVersion}`
+    },
     providerSpec: {
       value: {
         apiVersion: 'baremetalproviderspec/v1alpha1',
@@ -114,6 +118,7 @@ if (config.machines !== undefined) {
       privateIP: machine.runtimeNetworks[0].ip,
       sshPort: sshPort(machine),
       role: 'master',
+      kubeVersion: config.version,
     }));
   }
 
@@ -124,6 +129,7 @@ if (config.machines !== undefined) {
       privateIP: machine.runtimeNetworks[0].ip,
       sshPort: sshPort(machine),
       role: 'worker',
+      kubeVersion: config.version,
     }));
   }
 
